@@ -1,0 +1,30 @@
+class RestaurantPolicy < ApplicationPolicy
+  class Scope < Scope
+    def resolve
+      if user.admin?
+        scope.all
+      else
+        scope.all.last(5)
+      end
+    end
+  end
+
+  def create?
+    true
+  end
+
+  def show?
+    true
+  end
+
+  def update?
+    record.user == user || user.admin?
+  end
+
+  def destroy?
+    record.user == user || user.admin?
+  end
+
+
+end
+
